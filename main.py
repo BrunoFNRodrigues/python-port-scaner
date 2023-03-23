@@ -30,7 +30,7 @@ def check_ports(ports):
             print("\n Hostname Could Not Be Resolved !!!!")
             sys.exit()
     except socket.error:
-            print("\ Server not responding !!!!")
+            print("\n Server not responding !!!!")
             sys.exit()    
 
 def create_banner(target):
@@ -47,8 +47,13 @@ if __name__ == "__main__":
     
     # Defining a target
     hosts = input("Enter the target ip or the start ip and end ip of a network (use , as separator): ").split(",")
-    ports = input("Enter the target port or a range of ports (use , as separator): ").split(",")
     
+    if input("Just check the well know ports(yes/no):") != "yes":
+        ports = input("Enter the target port or a range of ports (use , as separator): ").split(",")
+    else:
+        ports = ["1","1024"]
+    
+        
     if len(hosts) > 1:
         for host in hosts:
             target = socket.gethostbyname(host)
@@ -62,6 +67,8 @@ if __name__ == "__main__":
 
         create_banner(target)
         check_ports([int(x) for x in ports])
+
+        
                     
 
 
