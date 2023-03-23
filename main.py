@@ -18,7 +18,12 @@ def check_ports(ports):
 
             # returns an error indicator
             result = s.connect_ex((target,port))
-            service = socket.getservbyport(port, "tcp")
+            service = ""
+            try:
+                service = socket.getservbyport(port, "tcp")
+            except:
+                None
+                
             if result ==0:
                 print("Port {}/{} is open".format(port,service))                
             s.close()
