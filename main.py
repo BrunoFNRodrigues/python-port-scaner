@@ -18,8 +18,9 @@ def check_ports(ports):
 
             # returns an error indicator
             result = s.connect_ex((target,port))
+            service = socket.getservbyport(port, "tcp")
             if result ==0:
-                print("Port {} is open".format(port))                
+                print("Port {}/{} is open".format(port,service))                
             s.close()
             
     except KeyboardInterrupt:
@@ -45,15 +46,19 @@ if __name__ == "__main__":
     print(ascii_banner)
     
     # Defining a target
-    host = input("Enter the target ip or the start ip and end ip of a network (use , as separator): ").split(",")
+    hosts = input("Enter the target ip or the start ip and end ip of a network (use , as separator): ").split(",")
     ports = input("Enter the target port or a range of ports (use , as separator): ").split(",")
     
-    if len(host) > 1:
-        while 1:
-            None
+    if len(hosts) > 1:
+        for host in hosts:
+            target = socket.gethostbyname(host)
+            create_banner(target)
+            check_ports([int(x) for x in ports])
+            print("\n")
+
     else:
         # translate hostname to IPv4
-        target = socket.gethostbyname(host[0])
+        target = socket.gethostbyname(hosts[0])
 
         create_banner(target)
         check_ports([int(x) for x in ports])
